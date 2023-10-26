@@ -1,0 +1,18 @@
+- name: Download Oh My Posh installation script
+  get_url:
+    url: "https://ohmyposh.dev/install.sh"
+    dest: "/tmp/install.sh"
+
+- name: Run Oh My Posh installation script
+  shell: "bash /tmp/install.sh"
+
+
+- name: Install fonts
+  shell: "oh-my-posh font install {{posh_font}}"
+
+
+- name: add oh-my-posh theme to /etc/bash.bashrc
+  lineinfile:
+    path: "/etc/bash.bashrc"
+    line: 'eval "$(oh-my-posh init bash --config {{posh_theme}})"'
+    insertafter: EOF

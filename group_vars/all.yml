@@ -1,0 +1,6 @@
+linux_distribution: ubuntu
+linux_distribution_release: jammy
+user: ajdin
+posh_theme: https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/1_shell.omp.json
+posh_font: Meslo
+# posh_theme: /root/themes/amro.omp.json

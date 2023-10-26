@@ -1,0 +1,54 @@
+- name: Main Playbook
+  hosts: localhost
+  connection: local 
+  become: true
+  tasks:
+    - name: Update and upgrade apt packages
+      become: true
+      apt:
+        update_cache: yes
+        upgrade: 'yes'
+
+    - name: Install packages
+      apt:
+        name: 
+          - ansible-core
+          - wget
+          - gpg
+          - apt-transport-https
+          - unzip
+          - git-all
+          - neofetch
+        state: present
+    - name: Configure neofetch on startup
+      lineinfile:
+        path: "/etc/bash.bashrc"
+        line: 'neofetch --ascii_distro Arch --gtk2 off --gtk3 off --uptime_shorthand off  --kernel_shorthand off --gpu_brand off --color_blocks off --package_managers off'
+        insertafter: EOF
+
+    - name: Ensure the ~/.cache directory exists
+      file:
+        path: "{{ user }}/.cache"
+        state: directory
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        mode: '0755'
+      become: yes
+
+    - name: vscode
+      include_role:
+        name: vscode
+
+    - name: Docker
+      include_role:
+        name: docker
+
+    - name: Add user to docker group
+      ansible.builtin.user:
+        name: "{{ ansible_user_id }}"
+        groups: docker
+        append: true
+
+    - name: ohMyPosh
+      include_role:
+        name: ohMyPosh

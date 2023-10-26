@@ -1,0 +1,56 @@
+# - name: Get OS Codename
+#   shell: . /etc/os-release && echo "$VERSION_CODENAME"
+#   register: os_codename
+#   changed_when: false
+#   check_mode: no
+
+# - name: Set OS Codename as a variable
+#   set_fact:
+#     os_codename: "{{ os_codename.stdout_lines[0] }}"
+- name: Run dpkg --print-architecture
+  shell: dpkg --print-architecture
+  register: architecture
+
+
+- name: Download Docker GPG key
+  become: true
+  get_url:
+    url: "https://download.docker.com/linux/{{ linux_distribution }}/gpg"
+    dest: "/tmp/docker.gpg.key"
+
+- name: Import Docker GPG key
+  become: true
+  ansible.builtin.shell: |
+    gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg /tmp/docker.gpg.key
+  changed_when: false
+  
+
+- name: Add Docker Repository
+  apt_repository:
+    repo: "deb [arch={{architecture.stdout}} signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/{{ linux_distribution }} {{ linux_distribution_release }} stable"
+    filename: docker
+    state: present
+
+- name: Remove Docker-related packages
+  apt:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - docker.io
+    - docker-doc
+    - docker-compose
+    - docker-compose-v2
+    - podman-docker
+    - containerd
+    - runc
+
+- name: Install Docker
+  become: true
+  apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
