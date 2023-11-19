@@ -19,12 +19,15 @@
           - unzip
           - git-all
           - neofetch
+          - dost2unix
         state: present
-    - name: Configure neofetch on startup
-      lineinfile:
-        path: "/etc/bash.bashrc"
-        line: 'neofetch --ascii_distro Arch --gtk2 off --gtk3 off --uptime_shorthand off  --kernel_shorthand off --gpu_brand off --color_blocks off --package_managers off'
-        insertafter: EOF
+
+    # I do not like neofetch
+    # - name: Configure neofetch on startup
+    #   lineinfile:
+    #     path: "/etc/bash.bashrc"
+    #     line: 'neofetch --ascii_distro Arch --gtk2 off --gtk3 off --uptime_shorthand off  --kernel_shorthand off --gpu_brand off --color_blocks off --package_managers off'
+    #     insertafter: EOF
 
     - name: Ensure the ~/.cache directory exists
       file:
@@ -49,6 +52,9 @@
         groups: docker
         append: true
 
-    - name: ohMyPosh
+    - name: Install ohMyPosh
       include_role:
         name: ohMyPosh
+
+    - name: Run .code
+      shell: code 
