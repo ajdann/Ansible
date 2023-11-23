@@ -20,6 +20,7 @@
           - git-all
           - neofetch
           - dost2unix
+          - tree
         state: present
 
     # I do not like neofetch
