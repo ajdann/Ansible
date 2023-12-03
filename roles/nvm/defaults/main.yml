@@ -1,0 +1,4 @@
+---
+# defaults file for nvm
+nvm_version: v0.39.5
+nvm_installation_path: /tmp/nvm_{{ nvm_version }}.sh

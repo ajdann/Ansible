@@ -1,0 +1,25 @@
+---
+# tasks file for nvm
+- name: Check if nvm {{ nvm_version }} installation exists
+  stat:
+    path: "{{ nvm_installation_path }}"
+  register: nvm_installation
+
+# - name: debug nvm_installation stat
+#   debug:
+#     var: nvm_installation.stat.exists == false
+
+- name: Download nvm installation
+  ansible.builtin.uri:
+    url: https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_version }}/install.sh
+    dest: "{{ nvm_installation_path }}"
+    mode: 777
+  when: nvm_installation.stat.exists == false
+
+- name: Change permissions of the file
+  file:
+    path: "{{ nvm_installation_path }}"
+    mode: "777"
+
+- name: Install nvm
+  shell: "{{ nvm_installation_path }}"

@@ -1,0 +1,4 @@
+---
+# defaults file for ohMyPosh
+ohMyPosh_installation_path: /tmp/install.sh
+  

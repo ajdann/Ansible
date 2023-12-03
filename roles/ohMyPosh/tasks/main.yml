@@ -1,0 +1,32 @@
+---
+# tasks file for ohMyPosh
+- name: Check if oh-my-posh installation exists
+  stat:
+    path: "{{ ohMyPosh_installation_path }}"
+  register: ohMyPosh_installation
+
+- name: Download Oh My Posh installation script
+  get_url:
+    url: "https://ohmyposh.dev/install.sh"
+    dest: "{{ ohMyPosh_installation_path }}"
+  when: ohMyPosh_installation.stat.exists
+
+- name: Check if oh-my-posh is available
+  command: "command -v oh-my-posh"
+  ignore_errors: true  # 
+  register: oh_my_posh_check
+
+
+- name: Run Oh My Posh installation script
+  shell: "bash {{ ohMyPosh_installation_path }}"
+  when: "'oh-my-posh' in oh_my_posh_check.stdout"
+
+- name: Install fonts
+  shell: "oh-my-posh font install {{posh_font}}"
+
+
+- name: add oh-my-posh theme to /etc/bash.bashrc
+  lineinfile:
+    path: "/etc/bash.bashrc"
+    line: 'eval "$(oh-my-posh init bash --config {{posh_theme}})"'
+    insertafter: EOF
