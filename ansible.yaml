@@ -1,6 +1,6 @@
 - name: Main Playbook
   hosts: localhost
-  connection: local 
+  connection: local
   tasks:
     # - name: Update and upgrade apt packages
     #   become: true
@@ -10,7 +10,7 @@
 
     # - name: Install packages
     #   apt:
-    #     name: 
+    #     name:
     #       - ansible-core
     #       - wget
     #       - gpg
@@ -20,6 +20,7 @@
     #       - neofetch
     #       - dos2unix
     #       - tree
+    # - gh
     #     state: present
 
     # # I do not like neofetch
@@ -38,7 +39,7 @@
     #     mode: '0755'
     #   become: yes
 
-    # dont actually need to isntall vscode 
+    # dont actually need to isntall vscode
     # # - name: vscode
     # #   include_role:
     # #     name: vscode
@@ -57,6 +58,10 @@
     #   include_role:
     #     name: ohMyPosh
 
-    - name: Install nvm 
+    - name: Install nvm
       include_role:
         name: nvm
+
+    - name: Install Cockpit
+      ansible.builtin.shell:
+        cmd: apt install -t ${VERSION_CODENAME}-backports cockpit
