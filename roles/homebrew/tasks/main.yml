@@ -1,0 +1,23 @@
+---
+- name: Check for brew command
+  command: command -v brew >/dev/null 2>&1
+  register: installed
+  no_log: true
+  ignore_errors: yes
+
+- name: Download Homebrew installer
+  get_url:
+    url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+    dest: /tmp/homebrew-installer.sh
+    mode: 'u+rwx'
+  when: installed.rc != 0
+  register: download
+
+- name: Run the install script
+  shell: /tmp/homebrew-installer.sh
+  when: download.changed
+
+- name: Remove the homebrew-installer.sh
+  file:
+    path: /tmp/homebrew-installer.sh
+    state: absent

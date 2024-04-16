@@ -2,61 +2,62 @@
   hosts: localhost
   connection: local
   tasks:
-    # - name: Update and upgrade apt packages
-    #   become: true
-    #   apt:
-    #     update_cache: yes
-    #     upgrade: 'yes'
+    - name: Update and upgrade apt packages
+      become: true
+      apt:
+        update_cache: yes
+        upgrade: 'yes'
 
-    # - name: Install packages
-    #   apt:
-    #     name:
-    #       - ansible-core
-    #       - wget
-    #       - gpg
-    #       - apt-transport-https
-    #       - unzip
-    #       - git-all
-    #       - neofetch
-    #       - dos2unix
-    #       - tree
-    # - gh
-    #     state: present
+    - name: Install packages
+      apt:
+        name:
+          - ansible-core
+          - wget
+          - gpg
+          - apt-transport-https
+          - unzip
+          - git-all
+          - neofetch
+          - dos2unix
+          - tree
+          - btop
+          - gh
+        state: present
 
-    # # I do not like neofetch
-    # # - name: Configure neofetch on startup
-    # #   lineinfile:
-    # #     path: "/etc/bash.bashrc"
-    # #     line: 'neofetch --ascii_distro Arch --gtk2 off --gtk3 off --uptime_shorthand off  --kernel_shorthand off --gpu_brand off --color_blocks off --package_managers off'
-    # #     insertafter: EOF
+    # I do not like neofetch
+    # - name: Configure neofetch on startup
+    #   lineinfile:
+    #     path: "/etc/bash.bashrc"
+    #     line: 'neofetch --ascii_distro Arch --gtk2 off --gtk3 off --uptime_shorthand off  --kernel_shorthand off --gpu_brand off --color_blocks off --package_managers off'
+    #     insertafter: EOF
 
-    # - name: Ensure the ~/.cache directory exists
-    #   file:
-    #     path: "{{ user }}/.cache"
-    #     state: directory
-    #     owner: "{{ user }}"
-    #     group: "{{ user }}"
-    #     mode: '0755'
-    #   become: yes
+    - name: Ensure the ~/.cache directory exists
+      file:
+        path: "{{ user }}/.cache"
+        state: directory
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        mode: '0755'
+      become: yes
 
-    # dont actually need to isntall vscode
-    # # - name: vscode
-    # #   include_role:
-    # #     name: vscode
-
-    # - name: Docker
+    dont actually need to isntall vscode
+    # - name: vscode
     #   include_role:
-    #     name: docker
+    #     name: vscode
 
-    # - name: Add user to docker group
-    #   ansible.builtin.user:
-    #     name: "{{ ansible_user_id }}"
-    #     groups: docker
-    #     append: true
+    - name: Docker
+      include_role:
+        name: docker
 
-    # - name: Install ohMyPosh
-    #   include_role:
-    #     name: ohMyPosh
+    - name: Add user to docker group
+      ansible.builtin.user:
+        name: "{{ ansible_user_id }}"
+        groups: docker
+        append: true
+
+    - name: Install ohMyPosh
+      include_role:
+        name: ohMyPosh
 
     - name: Install nvm
       include_role:
@@ -65,3 +66,19 @@
     - name: Install Cockpit
       ansible.builtin.shell:
         cmd: apt install -t ${VERSION_CODENAME}-backports cockpit
+
+    - name: Install homebrew
+      include_role:
+        name: homebrew
+
+    - name: Install atuin
+      include_role:
+        name: atuin
+
+    - name: Install zellij
+      include_role:
+        name: zellij
+
+    - name: Install eza
+      include_role:
+        name: eza

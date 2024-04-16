@@ -1,0 +1,23 @@
+---
+- name: Check for zellij command
+  command: command -v zellij >/dev/null 2>&1
+  register: installed
+  no_log: true
+  ignore_errors: yes
+
+- name: Download zellij installer
+  get_url:
+    url: zellij.dev/launch
+    dest: /tmp/zellij-installer.sh
+    mode: 'u+rwx'
+  when: installed.rc != 0
+  register: download
+
+- name: Run the install script
+  shell: /tmp/zellij-installer.sh
+  when: download.changed
+
+- name: Remove the zellij-installer.sh
+  file:
+    path: /tmp/zellij-installer.sh
+    state: absent
