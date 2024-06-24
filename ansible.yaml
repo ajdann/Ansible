@@ -20,9 +20,15 @@
           - neofetch
           - dos2unix
           - tree
-          - btop
+          - btop # to see resource usage
           - gh
+          - fzf
+          - neovim
+          - cowsay
+          - lolcat
+          - fortune
         state: present
+        
 
     # I do not like neofetch
     # - name: Configure neofetch on startup
@@ -40,7 +46,7 @@
         mode: '0755'
       become: yes
 
-    dont actually need to isntall vscode
+    #dont actually need to isntall vscode
     # - name: vscode
     #   include_role:
     #     name: vscode
@@ -63,9 +69,9 @@
       include_role:
         name: nvm
 
-    - name: Install Cockpit
-      ansible.builtin.shell:
-        cmd: apt install -t ${VERSION_CODENAME}-backports cockpit
+    # - name: Install Cockpit
+    #   ansible.builtin.shell:
+    #     cmd: apt install -t ${VERSION_CODENAME}-backports cockpit
 
     - name: Install homebrew
       include_role:
