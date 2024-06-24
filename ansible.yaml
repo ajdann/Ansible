@@ -9,6 +9,7 @@
         upgrade: 'yes'
 
     - name: Install packages
+      become: yes
       apt:
         name:
           - ansible-core
@@ -61,9 +62,9 @@
         groups: docker
         append: true
 
-    - name: Install ohMyPosh
-      include_role:
-        name: ohMyPosh
+    # - name: Install ohMyPosh
+    #   include_role:
+    #     name: ohMyPosh
 
     - name: Install nvm
       include_role:
@@ -73,18 +74,26 @@
     #   ansible.builtin.shell:
     #     cmd: apt install -t ${VERSION_CODENAME}-backports cockpit
 
-    - name: Install homebrew
-      include_role:
-        name: homebrew
+    # - name: Install homebrew
+    #   include_role:
+    #     name: homebrew
 
     - name: Install atuin
       include_role:
         name: atuin
 
-    - name: Install zellij
-      include_role:
-        name: zellij
+    # - name: Install zellij
+    #   include_role:
+    #     name: zellij
 
-    - name: Install eza
-      include_role:
-        name: eza
+    # - name: Install eza
+    #   include_role:
+    #     name: eza
+
+
+    - name: Ensure multiline block in .bashrc
+      blockinfile:
+        path: /home/{{ ansible_user_id }}/.bashrc
+        block: |
+          fortune | cowsay | lolcat
+

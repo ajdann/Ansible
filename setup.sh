@@ -7,3 +7,5 @@ pipx install ansible-core
 pipx ensurepath
 # sudo sh -c 'echo "eval \$(register-python-argcomplete3 pipx)" >> /etc/profile'
 # source /etc/profile
+
+source ~/.bashrc
