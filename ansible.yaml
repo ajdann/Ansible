@@ -28,6 +28,7 @@
           - cowsay
           - lolcat
           - fortune
+          - espeak
         state: present
         
 
